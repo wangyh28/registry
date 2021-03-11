@@ -14,5 +14,6 @@
 
 # Ensure to replace with the right host configuration.
 database: cloudsqlpostgres
-dbconfig: "host=<project_id>:<region>:<instance_id> user=registry dbname=registry password=iloveapis sslmode=disable"
+dbconfig: "host=wangyh-playground:us-central1:registry user=registry dbname=registry password=iloveapis sslmode=disable"
 log: error
+notify: true

@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-registry
+  namespace: helloworld
+spec:
+  selector:
+    matchLabels:
+      app: hello-registry
+  template:
+    metadata:
+      labels:
+        app: hello-registry
+        transcode: http
+    spec:
+      containers:
+      - name: hello-registry
+        image: gcr.io/wangyh-playground/hello-registry:latest
+        imagePullPolicy: Always
+        env:
+        - name: REGISTRY_HOSTNAME
+          value: "registry-backend.registry.svc.cluster.local"
+        ports:
+        - containerPort: 8081
+#          protocol: TCP
+#          name: grpc

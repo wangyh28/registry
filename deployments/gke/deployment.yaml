@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: registry-backend
+  namespace: registry
 spec:
   selector:
     matchLabels:
@@ -10,13 +11,17 @@ spec:
     metadata:
       labels:
         app: registry-backend
+        transcode: http
     spec:
+      serviceAccountName: api-registry
       containers:
-      - name: registry-backend-gke
-        image: gcr.io/${REGISTRY_PROJECT_IDENTIFIER}/registry-backend:latest
+      - name: registry-backend
+        image: gcr.io/wangyh-playground/registry-backend-noproxy:latest
         imagePullPolicy: Always
         env:
         - name: PORT
           value: "8080"
         ports:
         - containerPort: 8080
+#          protocol: TCP
+#          name: grpc

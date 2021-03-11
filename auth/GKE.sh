@@ -22,10 +22,10 @@ export REGISTRY_PROJECT_IDENTIFIER=$(gcloud config list --format 'value(core.pro
 # `registry-backend` under zone `us-central1-a`, and is exposed by the
 # service `registry-backend`. Ensure the cluster, service and zone are
 # correct.
-gcloud container clusters get-credentials registry-backend --zone us-central1-a || return
+gcloud container clusters get-credentials asm-poc-wi --zone us-central1-c || return
 
-ingress_ip=$(kubectl get service registry-backend -o jsonpath="{.status.loadBalancer.ingress[0].ip}")
-service_port=$(kubectl get service registry-backend -o jsonpath="{.spec.ports[0].port}")
+ingress_ip=$(kubectl get service registry-backend -n registry -o jsonpath="{.status.loadBalancer.ingress[0].ip}")
+service_port=$(kubectl get service registry-backend -n registry -o jsonpath="{.spec.ports[0].port}")
 if [ -z "${ingress_ip}" ]; then
   echo "External IP not found for service 'registry-backend'. Pleasee try later."
   return

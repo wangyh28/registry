@@ -1,0 +1,31 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  name: backend-grpc-filter
+spec:
+  configPatches:
+  - applyTo: HTTP_FILTER
+    match:
+      listener:
+        portNumber: 80
+        filterChain:
+          filter:
+            name: "envoy.http_connection_manager"
+            subFilter:
+              name: "envoy.router"
+    patch:
+      operation: INSERT_BEFORE
+      value:
+        name: envoy.filters.http.grpc_json_transcoder
+        typed_config:
+          "@type": type.googleapis.com/envoy.extensions.filters.http.grpc_json_transcoder.v3.GrpcJsonTranscoder
+          proto_descriptor_bin: <bytes>
+          services: ["google.cloud.apigee.registry.v1.Registry"]
+          print_options:
+            add_whitespace: true
+            always_print_primitive_fields: true
+            always_print_enums_as_ints: false
+            preserve_proto_field_names: false
+  workloadLabels:
+    app: registry-backend
+    transcode: http

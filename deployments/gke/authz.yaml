@@ -1,0 +1,38 @@
+## Default deny all
+#apiVersion: security.istio.io/v1beta1
+#kind: AuthorizationPolicy
+#metadata:
+#  name: deny-all
+#  namespace: registry
+#spec:
+#  {}
+#---
+
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: registry-authz-allow
+  namespace: registry
+spec:
+  action: ALLOW
+  selector:
+    matchLabels:
+      app: registry-backend
+  rules:
+  - from:
+    - source:
+        namespaces: ["helloworld"]
+        pricipals: ["*"]
+#        remoteIpBlocks: ["10.108.1.1"]
+#    to:
+#    - operation:
+##        hosts: ["registry-backend.registry.svc.cluster.local"]
+##        methods: ["POST"]
+##        ports: ["80"]
+#        paths:
+#        - /google.cloud.apigee.registry.v1.Registry/GetStatus
+#    when:
+#    - key: request.auth.claims[iss]
+#      values: [ "https://accounts.google.com" ]
+#    - key: request.auth.claims[aud]
+#      values: [ "http://be.default.svc.cluster.local:8080/" ]

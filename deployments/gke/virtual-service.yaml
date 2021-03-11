@@ -1,0 +1,21 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: registry-vs
+  namespace: registry
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - registry-gateway
+  http:
+  - route:
+    - destination:
+        host: registry-backend
+#  - match:
+#    - port: 80
+#    route:
+#    - destination:
+#        host: registry-backend
+#        port:
+#          number: 80
